@@ -86,10 +86,10 @@
         }
     </style>
 </head>
-<body class="overflow-x-hidden pb-20">
+<body class="overflow-x-hidden">
 
     <!-- Audio Player -->
-    <div id="audio-control" class="fixed bottom-24 right-5 z-50 bg-gray-800/50 p-3 rounded-full cursor-pointer backdrop-blur-sm">
+    <div id="audio-control" class="fixed bottom-5 right-5 z-50 bg-gray-800/50 p-3 rounded-full cursor-pointer backdrop-blur-sm">
         <i data-feather="music" class="text-white"></i>
     </div>
 
@@ -297,36 +297,9 @@
     </main>
     
     <!-- Toast Notification -->
-    <div id="toast" class="fixed bottom-28 right-5 bg-green-500 text-white py-2 px-4 rounded-lg shadow-lg opacity-0 transition-opacity duration-300">
+    <div id="toast" class="fixed bottom-20 right-5 bg-green-500 text-white py-2 px-4 rounded-lg shadow-lg opacity-0 transition-opacity duration-300">
         Berhasil disalin!
     </div>
-
-    <!-- Bottom Navigation Menu -->
-    <nav id="bottom-nav" class="hidden fixed bottom-0 left-0 right-0 z-30 bg-[#0f2142]/80 backdrop-blur-sm border-t border-[#c7a468]/20">
-        <div class="max-w-xl mx-auto flex justify-around py-2">
-            <a href="#family" class="flex flex-col items-center text-slate-300 hover:text-[#c7a468] transition-colors duration-300 p-2">
-                <i data-feather="users" class="w-6 h-6"></i>
-                <span class="text-xs mt-1">Keluarga</span>
-            </a>
-            <a href="#event" class="flex flex-col items-center text-slate-300 hover:text-[#c7a468] transition-colors duration-300 p-2">
-                <i data-feather="calendar" class="w-6 h-6"></i>
-                <span class="text-xs mt-1">Acara</span>
-            </a>
-            <a href="#gallery" class="flex flex-col items-center text-slate-300 hover:text-[#c7a468] transition-colors duration-300 p-2">
-                <i data-feather="image" class="w-6 h-6"></i>
-                <span class="text-xs mt-1">Galeri</span>
-            </a>
-            <a href="#gift" class="flex flex-col items-center text-slate-300 hover:text-[#c7a468] transition-colors duration-300 p-2">
-                <i data-feather="gift" class="w-6 h-6"></i>
-                <span class="text-xs mt-1">Hadiah</span>
-            </a>
-            <a href="#wishes" class="flex flex-col items-center text-slate-300 hover:text-[#c7a468] transition-colors duration-300 p-2">
-                <i data-feather="message-square" class="w-6 h-6"></i>
-                <span class="text-xs mt-1">Ucapan</span>
-            </a>
-        </div>
-    </nav>
-
 
     <!-- Firebase and Tone.js Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.js"></script>
@@ -372,7 +345,6 @@
         const wishesForm = document.getElementById('wishes-form');
         const wishesList = document.getElementById('wishes-list');
         const toastEl = document.getElementById('toast');
-        const bottomNav = document.getElementById('bottom-nav'); // Get the new nav menu
 
         // --- AUDIO ---
         let musicPlaying = false;
@@ -428,9 +400,6 @@
             mainContent.classList.remove('hidden');
             mainContent.classList.add('fade-in');
             
-            bottomNav.classList.remove('hidden'); // Show the nav menu
-            bottomNav.classList.add('fade-in');   // Animate it
-
             if (!musicPlaying) {
                 if (Tone.context.state !== 'running') {
                     await Tone.start();
