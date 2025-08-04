@@ -84,6 +84,37 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #e6c07e;
         }
+
+        /* Ornamen Latar Belakang Section */
+        .section-decorated {
+            position: relative;
+            padding-top: 100px;
+            padding-bottom: 100px;
+        }
+        .section-decorated::before, .section-decorated::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            width: 100%;
+            height: 150px;
+            background-image: url('https://i.ibb.co/R0gZ1g7/image-b3bf87.png');
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            z-index: 0;
+        }
+        .section-decorated::before {
+            top: 0;
+        }
+        .section-decorated::after {
+            bottom: 0;
+            transform: scaleY(-1); /* Membalik gambar secara vertikal */
+        }
+        /* Memastikan konten berada di atas ornamen */
+        .section-decorated > div {
+            position: relative;
+            z-index: 1;
+        }
     </style>
 </head>
 <body class="overflow-x-hidden">
@@ -124,7 +155,7 @@
     <main id="main-content" class="hidden relative z-10 bg-[#0a192f]">
         
         <!-- Introduction Section -->
-        <section id="intro" class="py-20 px-4 text-center">
+        <section id="intro" class="px-4 text-center section-decorated">
             <div class="max-w-4xl mx-auto slide-up">
                 <img src="https://placehold.co/150x150/ffffff/c7a468?text=Assalamu'alaikum" alt="Assalamualaikum" class="w-48 mx-auto mb-6">
                 <h2 class="font-great-vibes text-4xl md:text-5xl text-[#c7a468] mb-4">Assalamu'alaikum Wr. Wb.</h2>
@@ -135,19 +166,17 @@
         </section>
 
         <!-- Child & Parents Section -->
-        <section id="family" class="py-20 px-4 bg-[#0f2142]">
-            <div class="max-w-4xl mx-auto text-center">
-                <div class="slide-up">
-                    <img src="https://placehold.co/200x200/ffffff/c7a468?text=Foto+Anak" alt="Foto Anak" class="w-40 h-40 md:w-48 md:h-48 rounded-full mx-auto object-cover border-4 border-[#c7a468] shadow-xl">
-                    <h3 class="font-great-vibes text-5xl md:text-6xl text-[#c7a468] mt-6">Muhammad Kenzie Alfaro</h3>
-                    <p class="text-slate-300 mt-2">Putra dari:</p>
-                    <p class="font-semibold text-lg mt-1">Bapak Budi & Ibu Wati</p>
-                </div>
+        <section id="family" class="px-4 bg-[#0f2142] section-decorated">
+            <div class="max-w-4xl mx-auto text-center slide-up">
+                <img src="https://placehold.co/200x200/ffffff/c7a468?text=Foto+Anak" alt="Foto Anak" class="w-40 h-40 md:w-48 md:h-48 rounded-full mx-auto object-cover border-4 border-[#c7a468] shadow-xl">
+                <h3 class="font-great-vibes text-5xl md:text-6xl text-[#c7a468] mt-6">Muhammad Kenzie Alfaro</h3>
+                <p class="text-slate-300 mt-2">Putra dari:</p>
+                <p class="font-semibold text-lg mt-1">Bapak Budi & Ibu Wati</p>
             </div>
         </section>
 
         <!-- Event Details Section -->
-        <section id="event" class="py-20 px-4 text-center">
+        <section id="event" class="px-4 text-center section-decorated">
             <div class="max-w-4xl mx-auto slide-up">
                 <h2 class="font-great-vibes text-5xl md:text-6xl text-[#c7a468] mb-8">Detail Acara</h2>
                 <div class="bg-[#0f2142]/50 border border-[#c7a468]/30 rounded-2xl p-8 max-w-2xl mx-auto shadow-lg">
@@ -188,22 +217,20 @@
         </section>
         
         <!-- Gallery Section -->
-        <section id="gallery" class="py-20 px-4 bg-[#0f2142]">
-            <div class="max-w-6xl mx-auto text-center">
-                <div class="slide-up">
-                    <h2 class="font-great-vibes text-5xl md:text-6xl text-[#c7a468] mb-8">Galeri Kenangan</h2>
-                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                        <img src="https://placehold.co/600x600/334155/e2e8f0?text=Foto+1" alt="Gallery 1" class="rounded-lg shadow-lg w-full h-full object-cover hover:scale-105 transition-transform duration-300">
-                        <img src="https://placehold.co/600x600/334155/e2e8f0?text=Foto+2" alt="Gallery 2" class="rounded-lg shadow-lg w-full h-full object-cover hover:scale-105 transition-transform duration-300">
-                        <img src="https://placehold.co/600x600/334155/e2e8f0?text=Foto+3" alt="Gallery 3" class="rounded-lg shadow-lg w-full h-full object-cover hover:scale-105 transition-transform duration-300">
-                        <img src="https://placehold.co/600x600/334155/e2e8f0?text=Foto+4" alt="Gallery 4" class="rounded-lg shadow-lg w-full h-full object-cover hover:scale-105 transition-transform duration-300">
-                    </div>
+        <section id="gallery" class="px-4 bg-[#0f2142] section-decorated">
+            <div class="max-w-6xl mx-auto text-center slide-up">
+                <h2 class="font-great-vibes text-5xl md:text-6xl text-[#c7a468] mb-8">Galeri Kenangan</h2>
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    <img src="https://placehold.co/600x600/334155/e2e8f0?text=Foto+1" alt="Gallery 1" class="rounded-lg shadow-lg w-full h-full object-cover hover:scale-105 transition-transform duration-300">
+                    <img src="https://placehold.co/600x600/334155/e2e8f0?text=Foto+2" alt="Gallery 2" class="rounded-lg shadow-lg w-full h-full object-cover hover:scale-105 transition-transform duration-300">
+                    <img src="https://placehold.co/600x600/334155/e2e8f0?text=Foto+3" alt="Gallery 3" class="rounded-lg shadow-lg w-full h-full object-cover hover:scale-105 transition-transform duration-300">
+                    <img src="https://placehold.co/600x600/334155/e2e8f0?text=Foto+4" alt="Gallery 4" class="rounded-lg shadow-lg w-full h-full object-cover hover:scale-105 transition-transform duration-300">
                 </div>
             </div>
         </section>
 
         <!-- Gift Section -->
-        <section id="gift" class="py-20 px-4 text-center">
+        <section id="gift" class="px-4 text-center section-decorated">
              <div class="max-w-4xl mx-auto slide-up">
                 <h2 class="font-great-vibes text-5xl md:text-6xl text-[#c7a468] mb-4">Kirim Hadiah</h2>
                 <p class="text-slate-300 mb-8 max-w-2xl mx-auto">Doa restu Anda merupakan karunia yang sangat berarti bagi kami. Namun jika memberi adalah ungkapan tanda kasih, Anda dapat memberi kado secara digital.</p>
@@ -241,32 +268,30 @@
         </section>
 
         <!-- Wishes / RSVP Section -->
-        <section id="wishes" class="py-20 px-4 bg-[#0f2142]">
-            <div class="max-w-4xl mx-auto text-center">
-                <div class="slide-up">
-                    <h2 class="font-great-vibes text-5xl md:text-6xl text-[#c7a468] mb-8">Buku Tamu & Ucapan</h2>
-                    <div class="bg-[#0a192f]/50 border border-[#c7a468]/30 rounded-2xl p-8 text-left shadow-lg">
-                        <form id="wishes-form">
-                            <div class="mb-4">
-                                <label for="sender-name" class="block text-slate-300 mb-2">Nama Anda</label>
-                                <input type="text" id="sender-name" name="name" class="w-full bg-slate-700 border border-slate-600 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-[#c7a468]" required>
-                            </div>
-                            <div class="mb-4">
-                                <label for="wish-message" class="block text-slate-300 mb-2">Pesan & Doa</label>
-                                <textarea id="wish-message" name="message" rows="4" class="w-full bg-slate-700 border border-slate-600 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-[#c7a468]" required></textarea>
-                            </div>
-                            <button type="submit" class="w-full bg-[#c7a468] text-[#0a192f] font-bold py-3 px-6 rounded-full hover:bg-[#e6c07e] transition-colors duration-300">
-                                Kirim Ucapan
-                            </button>
-                        </form>
-                    </div>
-
-                    <div id="wishes-list" class="mt-12 text-left space-y-4 max-h-96 overflow-y-auto pr-4">
-                        <!-- Wishes will be loaded here by JavaScript -->
-                         <div class="bg-[#0a192f]/50 p-4 rounded-lg">
-                            <p class="font-bold text-[#c7a468]">Contoh Nama</p>
-                            <p class="text-slate-300 mt-1">Ini adalah contoh ucapan yang akan tampil di sini. Semoga acaranya lancar!</p>
+        <section id="wishes" class="px-4 bg-[#0f2142] section-decorated">
+            <div class="max-w-4xl mx-auto text-center slide-up">
+                <h2 class="font-great-vibes text-5xl md:text-6xl text-[#c7a468] mb-8">Buku Tamu & Ucapan</h2>
+                <div class="bg-[#0a192f]/50 border border-[#c7a468]/30 rounded-2xl p-8 text-left shadow-lg">
+                    <form id="wishes-form">
+                        <div class="mb-4">
+                            <label for="sender-name" class="block text-slate-300 mb-2">Nama Anda</label>
+                            <input type="text" id="sender-name" name="name" class="w-full bg-slate-700 border border-slate-600 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-[#c7a468]" required>
                         </div>
+                        <div class="mb-4">
+                            <label for="wish-message" class="block text-slate-300 mb-2">Pesan & Doa</label>
+                            <textarea id="wish-message" name="message" rows="4" class="w-full bg-slate-700 border border-slate-600 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-[#c7a468]" required></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-[#c7a468] text-[#0a192f] font-bold py-3 px-6 rounded-full hover:bg-[#e6c07e] transition-colors duration-300">
+                            Kirim Ucapan
+                        </button>
+                    </form>
+                </div>
+
+                <div id="wishes-list" class="mt-12 text-left space-y-4 max-h-96 overflow-y-auto pr-4">
+                    <!-- Wishes will be loaded here by JavaScript -->
+                     <div class="bg-[#0a192f]/50 p-4 rounded-lg">
+                        <p class="font-bold text-[#c7a468]">Contoh Nama</p>
+                        <p class="text-slate-300 mt-1">Ini adalah contoh ucapan yang akan tampil di sini. Semoga acaranya lancar!</p>
                     </div>
                 </div>
             </div>
