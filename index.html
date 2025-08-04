@@ -22,6 +22,7 @@
             font-family: 'Poppins', sans-serif;
             background-color: #0a192f;
             color: #E2E8F0;
+            overflow-x: hidden; /* Mencegah scroll horizontal karena animasi */
         }
         .font-great-vibes {
             font-family: 'Great Vibes', cursive;
@@ -29,7 +30,7 @@
         
         /* Background Image & Overlay */
         #hero, #closing {
-            background-image: url('https://demo.invi.id/wp-content/uploads/2024/07/Khitanan-03-01-scaled-1-1536x989.webp');
+            background-image: url('https://placehold.co/1080x1920/0a192f/e2e8f0?text=Background+Masjid');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -56,20 +57,6 @@
             animation: fadeIn 1.5s ease-in-out;
         }
 
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(50px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .slide-up {
-            opacity: 0;
-            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-        }
-        .slide-up.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
         /* Scrollbar styling */
         ::-webkit-scrollbar {
             width: 8px;
@@ -85,7 +72,7 @@
             background: #e6c07e;
         }
 
-        /* Ornamen Latar Belakang Section */
+        /* Ornamen Latar Belakang Section (dengan animasi) */
         .section-decorated {
             position: relative;
             padding-top: 100px;
@@ -98,18 +85,42 @@
             right: 0;
             width: 100%;
             height: 150px;
-            background-image: url('https://demo.invi.id/wp-content/uploads/2024/07/Khitanan-03-01-scaled-1-1536x989.webp');
+            background-image: url('https://i.ibb.co/R0gZ1g7/image-b3bf87.png');
             background-size: 100% 100%;
             background-repeat: no-repeat;
             z-index: 0;
+            opacity: 0;
+            transition: transform 1s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 1s ease-out;
         }
         .section-decorated::before {
             top: 0;
+            transform: translateX(-100%);
         }
         .section-decorated::after {
             bottom: 0;
-            transform: scaleY(-1); /* Membalik gambar secara vertikal */
+            transform: translateX(100%) scaleY(-1); /* Membalik gambar dan geser dari kanan */
         }
+        
+        .section-decorated.visible::before {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .section-decorated.visible::after {
+            opacity: 1;
+            transform: translateX(0) scaleY(-1);
+        }
+
+        /* Konten dengan animasi */
+        .slide-up {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.8s ease-out 0.4s, transform 0.8s ease-out 0.4s; /* Delay agar ornamen muncul dulu */
+        }
+        .section-decorated.visible .slide-up {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
         /* Memastikan konten berada di atas ornamen */
         .section-decorated > div {
             position: relative;
@@ -281,7 +292,7 @@
                             <label for="wish-message" class="block text-slate-300 mb-2">Pesan & Doa</label>
                             <textarea id="wish-message" name="message" rows="4" class="w-full bg-slate-700 border border-slate-600 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-[#c7a468]" required></textarea>
                         </div>
-                        <button type="submit" class="w-full bg-[#c7a468] text-[#0a192f] font-bold py-3 px-6 rounded-full hover:bg-[#e6c07e] transition-colors duration-300">
+                        <button type="submit" class="w-full bg-[#c7a468] text-[#0a192f] font-bold py-3 px-6 rounded-full hover:bg-[#e6c07e] transition-colors duration-300 disabled:opacity-50">
                             Kirim Ucapan
                         </button>
                     </form>
@@ -289,10 +300,6 @@
 
                 <div id="wishes-list" class="mt-12 text-left space-y-4 max-h-96 overflow-y-auto pr-4">
                     <!-- Wishes will be loaded here by JavaScript -->
-                     <div class="bg-[#0a192f]/50 p-4 rounded-lg">
-                        <p class="font-bold text-[#c7a468]">Contoh Nama</p>
-                        <p class="text-slate-300 mt-1">Ini adalah contoh ucapan yang akan tampil di sini. Semoga acaranya lancar!</p>
-                    </div>
                 </div>
             </div>
         </section>
@@ -322,8 +329,8 @@
     </main>
     
     <!-- Toast Notification -->
-    <div id="toast" class="fixed bottom-20 right-5 bg-green-500 text-white py-2 px-4 rounded-lg shadow-lg opacity-0 transition-opacity duration-300">
-        Berhasil disalin!
+    <div id="toast" class="fixed bottom-20 right-5 bg-green-500 text-white py-2 px-4 rounded-lg shadow-lg opacity-0 transition-opacity duration-300 z-50">
+        Pesan Toast
     </div>
 
     <!-- Firebase and Tone.js Scripts -->
@@ -332,7 +339,7 @@
         // Firebase Imports
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, onSnapshot, query } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, onSnapshot, query, serverTimestamp, orderBy } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         // --- FIREBASE CONFIGURATION ---
         const firebaseConfig = {
@@ -473,58 +480,61 @@
             document.getElementById('seconds').innerText = Math.floor((distance % (1000 * 60)) / 1000).toString().padStart(2, '0');
         }, 1000);
 
-        // --- COPY TO CLIPBOARD ---
+        // --- TOAST & CLIPBOARD ---
+        function showToast(message, isError = false) {
+            toastEl.innerText = message;
+            if (isError) {
+                toastEl.classList.remove('bg-green-500');
+                toastEl.classList.add('bg-red-500');
+            } else {
+                toastEl.classList.remove('bg-red-500');
+                toastEl.classList.add('bg-green-500');
+            }
+            toastEl.style.opacity = '1';
+            setTimeout(() => {
+                toastEl.style.opacity = '0';
+            }, 3000);
+        }
+
         window.copyToClipboard = (elementId) => {
             const textToCopy = document.getElementById(elementId).innerText;
-            
             const textArea = document.createElement("textarea");
             textArea.value = textToCopy;
             document.body.appendChild(textArea);
             textArea.select();
             try {
                 document.execCommand('copy');
-                toastEl.innerText = "Berhasil disalin!";
-                toastEl.classList.replace('bg-red-500', 'bg-green-500');
+                showToast("Berhasil disalin!");
             } catch (err) {
                 console.error('Gagal menyalin:', err);
-                toastEl.innerText = "Gagal menyalin!";
-                toastEl.classList.replace('bg-green-500', 'bg-red-500');
+                showToast("Gagal menyalin!", true);
             }
             document.body.removeChild(textArea);
-
-            toastEl.style.opacity = '1';
-            setTimeout(() => {
-                toastEl.style.opacity = '0';
-            }, 2000);
         }
 
         // --- AUTHENTICATION & FIRESTORE LOGIC ---
         const setupFirestoreListeners = () => {
             if (!db) return;
 
-            const q = query(collection(db, WISHES_COLLECTION_PATH));
+            wishesList.innerHTML = '<p class="text-center text-slate-400">Memuat ucapan...</p>';
+            const q = query(collection(db, WISHES_COLLECTION_PATH), orderBy("timestamp", "desc"));
+            
             onSnapshot(q, (querySnapshot) => {
-                wishesList.innerHTML = '';
-                const wishes = [];
-                querySnapshot.forEach((doc) => {
-                    wishes.push(doc.data());
-                });
-                
-                wishes.sort((a, b) => (b.timestamp?.toMillis() || 0) - (a.timestamp?.toMillis() || 0));
-
-                if (wishes.length === 0) {
-                     wishesList.innerHTML = '<p class="text-center text-slate-400">Jadilah yang pertama mengirim ucapan!</p>';
-                } else {
-                    wishes.forEach(data => {
-                        const wishElement = document.createElement('div');
-                        wishElement.className = 'bg-[#0a192f]/50 p-4 rounded-lg fade-in';
-                        wishElement.innerHTML = `
-                            <p class="font-bold text-[#c7a468]">${escapeHTML(data.name)}</p>
-                            <p class="text-slate-300 mt-1">${escapeHTML(data.message)}</p>
-                        `;
-                        wishesList.appendChild(wishElement);
-                    });
+                if (querySnapshot.empty) {
+                    wishesList.innerHTML = '<p class="text-center text-slate-400">Jadilah yang pertama mengirim ucapan!</p>';
+                    return;
                 }
+                wishesList.innerHTML = '';
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    const wishElement = document.createElement('div');
+                    wishElement.className = 'bg-[#0a192f]/50 p-4 rounded-lg fade-in';
+                    wishElement.innerHTML = `
+                        <p class="font-bold text-[#c7a468]">${escapeHTML(data.name)}</p>
+                        <p class="text-slate-300 mt-1">${escapeHTML(data.message)}</p>
+                    `;
+                    wishesList.appendChild(wishElement);
+                });
             }, (error) => {
                 console.error("Firestore snapshot error:", error);
                 wishesList.innerHTML = '<p class="text-center text-red-400">Gagal memuat ucapan. Periksa izin akses database.</p>';
@@ -532,23 +542,31 @@
 
             wishesForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
+                const submitButton = e.target.querySelector('button[type="submit"]');
+
                 if (!auth.currentUser) {
-                    alert("Autentikasi diperlukan untuk mengirim ucapan.");
+                    showToast("Autentikasi diperlukan. Silakan muat ulang halaman.", true);
                     return;
                 }
                 const name = wishesForm.name.value;
                 const message = wishesForm.message.value;
+
+                submitButton.disabled = true;
+                submitButton.innerText = "Mengirim...";
                 
                 try {
                     await addDoc(collection(db, WISHES_COLLECTION_PATH), {
                         name: name,
                         message: message,
-                        timestamp: new Date()
+                        timestamp: serverTimestamp()
                     });
                     wishesForm.reset();
                 } catch (error) {
                     console.error("Error adding document: ", error);
-                    alert("Gagal mengirim ucapan. Silakan coba lagi.");
+                    showToast("Gagal mengirim ucapan. Silakan coba lagi.", true);
+                } finally {
+                    submitButton.disabled = false;
+                    submitButton.innerText = "Kirim Ucapan";
                 }
             });
         };
@@ -594,9 +612,9 @@
                     entry.target.classList.add('visible');
                 }
             });
-        }, { threshold: 0.1 });
+        }, { threshold: 0.2 });
 
-        document.querySelectorAll('.slide-up').forEach(el => {
+        document.querySelectorAll('.section-decorated, #closing .slide-up').forEach(el => {
             observer.observe(el);
         });
 
